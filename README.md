@@ -15,6 +15,9 @@ This will install `nix` with:
 - Automatic store optimization
 - Other sensible defaults
 
+> [!NOTE]
+> This configuration uses the flakes feature of Nix, which is automatically enabled by the Determinate Nix Installer.
+
 ### 2. Install nix-darwin
 After installing `nix`, clone this repo:
 ```bash
@@ -56,6 +59,15 @@ nix run nix-darwin -- switch --flake .
 > [!NOTE]
 > The first build might take some time as it downloads and builds all required packages.
 
+## Flake Structure
+This configuration uses several flake inputs:
+- `nixpkgs`: The main Nix packages repository
+- `nix-darwin`: For macOS system configuration
+- `home-manager`: For user environment management
+- `stable`: Stable NixOS channel for certain packages
+- `devenv`: For development environment management
+- And various utilities like `flake-utils` and `treefmt-nix`
+
 ## Configuration Structure
 
 ### Core Configuration
@@ -80,6 +92,8 @@ nix run nix-darwin -- switch --flake .
 * [profiles/main.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/profiles/main.nix) - Main system profile
 * [profiles/home-manager/main.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/profiles/home-manager/main.nix) - Main user profile
 
+## Usage
+
 ### Adding New Packages
 Edit config file (e.g., `modules/darwin/brew.nix` for Homebrew packages or `modules/home-manager/default.nix` for Nix packages) and run the rebuild command.
 
@@ -89,9 +103,12 @@ Edit config file (e.g., `modules/darwin/brew.nix` for Homebrew packages or `modu
 ### Updating System
 To update all packages and apply changes:
 ```bash
-nix flake update
+nix flake update  # Updates all flake inputs
 darwin-rebuild switch --flake .
 ```
+
+> [!TIP]
+> You can update specific inputs using `nix flake lock --update-input home-manager` for example.
 
 ### Troubleshooting
 If you encounter issues:
@@ -109,7 +126,7 @@ If you encounter issues:
 
 1. First uninstall nix-darwin:
 ```bash
-nix run nix-darwin# darwin-uninstaller
+nix run nix-darwin -- uninstall
 ```
 
 2. Then uninstall Nix:
@@ -122,3 +139,4 @@ nix run nix-darwin# darwin-uninstaller
 - [nix-darwin Manual](https://daiderd.com/nix-darwin/manual/index.html)
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
 - [Nix Darwin Options](https://daiderd.com/nix-darwin/manual/options.html)
+- [Nix Flakes](https://nixos.wiki/wiki/Flakes)
