@@ -1,5 +1,5 @@
 # Personal Nix Darwin Configuration
-My declarative way to manage my macOS system configuration, including packages, system settings, and development environment with personal Nix configuration for macOS using [nix-darwin](https://github.com/LnL7/nix-darwin) and [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer).
+My declarative way to manage  macOS system configuration, including packages, system settings, and development environment using [nix-darwin](https://github.com/LnL7/nix-darwin) and [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer).
 
 ## Installation
 
