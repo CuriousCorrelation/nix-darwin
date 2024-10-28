@@ -134,6 +134,12 @@ nix run nix-darwin -- uninstall
 /nix/nix-installer uninstall
 ```
 
+## Inspiration
+- https://github.com/kclejeune/system
+- https://github.com/MatthiasBenaets/nix-config
+- https://github.com/i077/system
+
+
 ## Resources
 - [Nix Manual](https://nixos.org/manual/nix/stable/)
 - [nix-darwin Manual](https://daiderd.com/nix-darwin/manual/index.html)
