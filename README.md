@@ -57,29 +57,28 @@ nix run nix-darwin -- switch --flake .
 > The first build might take some time as it downloads and builds all required packages.
 
 ## Configuration Structure
-The configuration is organized as follows:
-```
-.
-├── flake.nix              # Flake configuration and inputs
-├── modules/
-│   ├── darwin/           # Darwin-specific system configurations
-│   │   ├── apps.nix      # macOS applications (via Homebrew)
-│   │   ├── aqua.nix      # Window manager settings (yabai + skhd)
-│   │   ├── brew.nix      # Homebrew configuration
-│   │   ├── core.nix      # Core system settings
-│   │   └── preferences.nix # macOS system preferences
-│   └── home-manager/     # User environment configurations
-│       ├── alacritty.nix # Terminal emulator config
-│       ├── bat.nix       # bat (cat alternative) config
-│       ├── fzf.nix       # Fuzzy finder config
-│       ├── git.nix       # Git configuration
-│       ├── ssh.nix       # SSH configuration
-│       └── zsh.nix       # Shell configuration
-└── profiles/            # Environment profiles
-    ├── main.nix         # Main system profile
-    └── home-manager/    # User profiles
-        └── main.nix     # Main user profile
-```
+
+### Core Configuration
+* [flake.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/flake.nix) - Flake configuration and inputs
+
+### Darwin-specific Configurations
+* [apps.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/darwin/apps.nix) - macOS applications (via Homebrew)
+* [aqua.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/darwin/aqua.nix) - Window manager settings (yabai + skhd)
+* [brew.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/darwin/brew.nix) - Homebrew configuration
+* [core.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/darwin/core.nix) - Core system settings
+* [preferences.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/darwin/preferences.nix) - macOS system preferences
+
+### Home Manager Configurations
+* [alacritty.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/home-manager/alacritty.nix) - Terminal emulator config
+* [bat.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/home-manager/bat.nix) - bat (cat alternative) config
+* [fzf.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/home-manager/fzf.nix) - Fuzzy finder config
+* [git.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/home-manager/git.nix) - Git configuration
+* [ssh.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/home-manager/ssh.nix) - SSH configuration
+* [zsh.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/modules/home-manager/zsh.nix) - Shell configuration
+
+### Profiles
+* [profiles/main.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/profiles/main.nix) - Main system profile
+* [profiles/home-manager/main.nix](https://github.com/CuriousCorrelation/nix-darwin/blob/main/profiles/home-manager/main.nix) - Main user profile
 
 ### Adding New Packages
 Edit config file (e.g., `modules/darwin/brew.nix` for Homebrew packages or `modules/home-manager/default.nix` for Nix packages) and run the rebuild command.
