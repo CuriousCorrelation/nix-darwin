@@ -53,7 +53,7 @@ in {
         bold.family = fontFamily;
         italic.family = fontFamily;
         bold_italic.family = fontFamily;
-        size = 9.0;
+        size = 11.0;
       };
       terminal = {
         shell.program = "${pkgs.zsh}/bin/zsh";
