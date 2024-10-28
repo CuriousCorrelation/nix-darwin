@@ -138,5 +138,5 @@ nix run nix-darwin -- uninstall
 - [Nix Manual](https://nixos.org/manual/nix/stable/)
 - [nix-darwin Manual](https://daiderd.com/nix-darwin/manual/index.html)
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
-- [Nix Darwin Options](https://daiderd.com/nix-darwin/manual/options.html)
+- [Nix Darwin Options](https://mynixos.com/nix-darwin/options)
 - [Nix Flakes](https://nixos.wiki/wiki/Flakes)
