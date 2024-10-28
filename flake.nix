@@ -31,7 +31,13 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
   };
 
-  outputs = { self, darwin, home-manager, nixpkgs, ... } @ inputs: {
+  outputs = {
+    self,
+    darwin,
+    home-manager,
+    nixpkgs,
+    ...
+  } @ inputs: {
     darwinConfigurations."Curiouss-MacBook-Pro" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
@@ -40,28 +46,27 @@
         ./modules/darwin/apps.nix
         ./profiles/main.nix
       ];
-      specialArgs = { inherit self inputs nixpkgs; };
+      specialArgs = {inherit self inputs nixpkgs;};
     };
 
-    homeConfigurations."Curiouss-MacBook-Pro" =
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          system = "aarch64-darwin";
-        };
-        modules = [
-          ./modules/home-manager
-          {
-            home = {
-              username = "curiouscorrelation";
-              homeDirectory = "/Users/curiouscorrelation";
-              sessionVariables = {
-                NIX_PATH = "nixpkgs=${nixpkgs}";
-              };
-            };
-          }
-          ./profiles/home-manager/main.nix
-        ];
-        extraSpecialArgs = { inherit self inputs nixpkgs; };
+    homeConfigurations."Curiouss-MacBook-Pro" = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        system = "aarch64-darwin";
       };
+      modules = [
+        ./modules/home-manager
+        {
+          home = {
+            username = "curiouscorrelation";
+            homeDirectory = "/Users/curiouscorrelation";
+            sessionVariables = {
+              NIX_PATH = "nixpkgs=${nixpkgs}";
+            };
+          };
+        }
+        ./profiles/home-manager/main.nix
+      ];
+      extraSpecialArgs = {inherit self inputs nixpkgs;};
+    };
   };
 }

@@ -1,6 +1,4 @@
-{ config, lib, pkgs, ... }:
-
-{
+{config, ...}: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -23,19 +21,19 @@
     zplug = {
       enable = true;
       plugins = [
-        { name = "supercrabtree/k"; }
+        {name = "supercrabtree/k";}
       ];
     };
 
     oh-my-zsh = {
       enable = true;
       plugins = [
-         "git"
-         "fzf"
-         "history"
-         "node"
-         "rust"
-         "ssh-agent"
+        "git"
+        "fzf"
+        "history"
+        "node"
+        "rust"
+        "ssh-agent"
       ];
     };
   };

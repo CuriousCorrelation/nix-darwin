@@ -48,8 +48,8 @@ in {
     packages = with pkgs; [
       devenv
       direnv
-      (nerdfonts.override { fonts = [ "FantasqueSansMono" "FiraCode" "Iosevka" "JetBrainsMono" ]; })
-      (aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
+      (nerdfonts.override {fonts = ["FantasqueSansMono" "FiraCode" "Iosevka" "JetBrainsMono"];})
+      (aspellWithDicts (dicts: with dicts; [en en-computers en-science]))
       ffmpeg
       mpv
       neofetch

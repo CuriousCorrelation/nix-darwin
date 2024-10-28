@@ -1,6 +1,4 @@
-{ config, pkgs, lib, ... }:
-
-let
+{pkgs, ...}: let
   fontFamily = "Iosevka Nerd Font Mono";
 
   # Theme `adventure`
@@ -34,13 +32,15 @@ let
       yellow = "0xffb670";
     };
   };
-in
-{
+in {
   programs.alacritty = {
     enable = true;
     settings = {
       window = {
-        padding = { x = 10; y = 10; };
+        padding = {
+          x = 10;
+          y = 10;
+        };
         option_as_alt = "Both";
         dynamic_title = true;
       };

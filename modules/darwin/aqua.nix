@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   # Window manager configuration
   services.yabai = {
     enable = true;
@@ -44,7 +46,7 @@
       yabai -m rule --add label="mpv" app="^mpv$" manage=off
       yabai -m rule --add label="Software Update" title="Software Update" manage=off
       yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
-      '';
+    '';
   };
 
   # Keyboard shortcuts daemon
