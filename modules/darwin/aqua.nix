@@ -58,8 +58,10 @@
 
       # Toggle Window
       lalt - t : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
-      lalt - f : yabai -m window --toggle zoom-fullscreen
       lalt - q : yabai -m window --close
+
+      # Fullscreen Window
+      lalt + shift - f : yabai -m window --toggle zoom-fullscreen
 
       # Close Current Window
       lalt + shift - q : yabai -m window --close
