@@ -70,8 +70,4 @@
     # list of acceptable shells in /etc/shells
     shells = with pkgs; [bash zsh];
   };
-
-  fonts = {
-    packages = with pkgs; [jetbrains-mono];
-  };
 }
