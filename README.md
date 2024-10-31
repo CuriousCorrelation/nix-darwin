@@ -1,6 +1,44 @@
 # Personal Nix Darwin Configuration
 My declarative way to manage  macOS system configuration, including packages, system settings, and development environment using [nix-darwin](https://github.com/LnL7/nix-darwin) and [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer).
 
+## Why?
+
+While this configuration supports both Nix and Homebrew, I recommend using Nix as your primary package manager for a bunch of reasons:
+
+- **Reproducibility**:
+  - Ever had to set up a new machine and thought "this will take days"? Not anymore!
+  - No more scattered dotfiles or "what did I install again?" moments
+  - Plus if you work on developing cross-platform apps, sometimes (more often than you think!) you gotta nuke your system, this way you can get it back up and running in a blink, no need to copy over dotconfig files
+
+- **Declarative Configuration**:
+  - Your entire system setup is in code - like Infrastructure as Code, but for your PC
+  - Breaking change? Just git reset to go back in time
+  - Share your setup with your team without writing a 50-page wiki document
+
+- **Isolation**:
+  - Need Python 2.7 for that legacy project but Python 3.11 for the new stuff? No problem!
+    - Though maybe it's time to rewrite it in Rust? 🦀
+  - Want to try something new? Just `nix run nixpkgs#cowsay -- "Hello"` without installing anything
+  - No more "but it works in development" when your local Node version is different from production
+    - Though maybe it's time to rewrite it in Rust? 🦀
+
+- **Atomic Updates**:
+  - Like Git for your system - every change is a commit you can revert
+  - That moment when an update breaks everything? Just roll back - instantly
+  - No more partially broken systems due to failed updates
+
+- **Better Development Environments**:
+  - Each project gets its own little world with exactly what it needs
+  - Switch between Node versions as easily as switching git branches
+  - New team member? Same environment, zero setup headaches
+
+This still supports Homebrew, although it's mainly a fallback, use it only for:
+- Apps that just won't play nice with Nix
+- Apps not available in Nix (rare but happens)
+- Apps that require system integration that Nix can't provide
+- System stuff that needs special macOS permissions
+- When you absolutely need that one app that's only on the Mac App Store
+
 ## Installation
 
 ### 1. Install Nix
