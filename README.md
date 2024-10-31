@@ -1,4 +1,7 @@
 # Personal Nix Darwin Configuration
+
+![Firefox-Neofetch-Alacritty](screenshots/firefox-neofetch-alacritty.png)
+
 My declarative way to manage  macOS system configuration, including packages, system settings, and development environment using [nix-darwin](https://github.com/LnL7/nix-darwin) and [Determinate Nix Installer](https://github.com/DeterminateSystems/nix-installer).
 
 ## Why?
