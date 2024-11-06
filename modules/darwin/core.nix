@@ -1,12 +1,10 @@
 {
   inputs,
   config,
-  pkgs,
   ...
 }: {
   # Environment setup
   environment = {
-    loginShell = pkgs.zsh;
     etc = {
       darwin.source = "${inputs.darwin}";
     };
