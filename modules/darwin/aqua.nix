@@ -54,53 +54,53 @@
     enable = true;
     skhdConfig = ''
       # Open Terminal
-      lalt - return : open -n -a "Alacritty"
+      lcmd - return : open -n -a "Alacritty"
 
       # Toggle Window
       lalt - t : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
-      lalt - q : yabai -m window --close
+      lcmd - q : yabai -m window --close
 
       # Fullscreen Window
-      lalt + shift - f : yabai -m window --toggle zoom-fullscreen
+      lcmd + shift - f : yabai -m window --toggle zoom-fullscreen
 
-      # Close Current Window
-      lalt + shift - q : yabai -m window --close
+      # Close Current Window [already set as default]
+      # lcmd - q : yabai -m window --close
 
       # Focus Window
-      lalt - k : yabai -m window --focus north
-      lalt - j : yabai -m window --focus south
-      lalt - h : yabai -m window --focus west
-      lalt - l : yabai -m window --focus east
+      lcmd - k : yabai -m window --focus north
+      lcmd - j : yabai -m window --focus south
+      lcmd - h : yabai -m window --focus west
+      lcmd - l : yabai -m window --focus east
 
       # Swap Window
-      lalt + shift - k : yabai -m window --swap north
-      lalt + shift - j : yabai -m window --swap south
-      lalt + shift - h : yabai -m window --swap west
-      lalt + shift - l : yabai -m window --swap east
+      lcmd + shift - k : yabai -m window --swap north
+      lcmd + shift - j : yabai -m window --swap south
+      lcmd + shift - h : yabai -m window --swap west
+      lcmd + shift - l : yabai -m window --swap east
 
       # Resize Window
-      lalt + cmd - k : yabai -m window --resize up:-50:0 && yabai -m window --resize down:-50:0
-      lalt + cmd - j : yabai -m window --resize up:-50:0 && yabai -m window --resize down:-50:0
-      lalt + cmd - h : yabai -m window --resize left:-50:0 && yabai -m window --resize right:-50:0
-      lalt + cmd - l : yabai -m window --resize left:50:0 && yabai -m window --resize right:50:0
+      lcmd + cmd - k : yabai -m window --resize up:-50:0 && yabai -m window --resize down:-50:0
+      lcmd + cmd - j : yabai -m window --resize up:-50:0 && yabai -m window --resize down:-50:0
+      lcmd + cmd - h : yabai -m window --resize left:-50:0 && yabai -m window --resize right:-50:0
+      lcmd + cmd - l : yabai -m window --resize left:50:0 && yabai -m window --resize right:50:0
 
       # Focus Space
-      lalt - 1 : yabai -m space --focus 1
-      lalt - 2 : yabai -m space --focus 2
-      lalt - 3 : yabai -m space --focus 3
-      lalt - 4 : yabai -m space --focus 4
-      lalt - 5 : yabai -m space --focus 5
-      lalt - j : yabai -m space --focus prev
-      lalt - l : yabai -m space --focus next
+      lcmd - 1 : yabai -m space --focus 1
+      lcmd - 2 : yabai -m space --focus 2
+      lcmd - 3 : yabai -m space --focus 3
+      lcmd - 4 : yabai -m space --focus 4
+      lcmd - 5 : yabai -m space --focus 5
+      lcmd - j : yabai -m space --focus prev
+      lcmd - l : yabai -m space --focus next
 
       # Send to Space
-      lalt + shift - 1 : yabai -m window --space 1
-      lalt + shift - 2 : yabai -m window --space 2
-      lalt + shift - 3 : yabai -m window --space 3
-      lalt + shift - 4 : yabai -m window --space 4
-      lalt + shift - 5 : yabai -m window --space 5
-      lalt + shift - h : yabai -m window --space prev && yabai -m space --focus prev
-      lalt + shift - l : yabai -m window --space next && yabai -m space --focus next
+      lcmd + shift - 1 : yabai -m window --space 1
+      lcmd + shift - 2 : yabai -m window --space 2
+      lcmd + shift - 3 : yabai -m window --space 3
+      lcmd + shift - 4 : yabai -m window --space 4
+      lcmd + shift - 5 : yabai -m window --space 5
+      lcmd + shift - h : yabai -m window --space prev && yabai -m space --focus prev
+      lcmd + shift - l : yabai -m window --space next && yabai -m space --focus next
     '';
   };
 }
