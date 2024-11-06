@@ -57,6 +57,7 @@ in {
       rsync
       shellcheck
       tree
+      utm
     ];
   };
 
