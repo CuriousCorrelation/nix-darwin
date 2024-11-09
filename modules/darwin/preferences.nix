@@ -16,6 +16,8 @@
       AppleShowScrollBars = "Automatic";
       NSAutomaticCapitalizationEnabled = true;
       NSAutomaticSpellingCorrectionEnabled = true;
+      "com.apple.swipescrolldirection" = false;
+      # _HIHideMenuBar = false;
     };
 
     # file viewer settings
