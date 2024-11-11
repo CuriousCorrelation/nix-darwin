@@ -4,7 +4,7 @@
   # Theme `adventure`
   adventure = {
     primary = {
-      background = "0x040404";
+      background = "0x2b2b2b";
       foreground = "0xfeffff";
     };
     cursor = {
