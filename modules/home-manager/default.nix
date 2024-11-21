@@ -58,6 +58,7 @@ in {
       shellcheck
       tree
       utm
+      smartmontools
     ];
   };
 

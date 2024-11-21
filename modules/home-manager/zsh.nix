@@ -34,6 +34,7 @@
         "node"
         "rust"
         "ssh-agent"
+        "direnv"
       ];
     };
   };

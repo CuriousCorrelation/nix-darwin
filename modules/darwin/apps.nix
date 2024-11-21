@@ -2,7 +2,7 @@
   homebrew = {
     casks = [
       "signal"
-      # "slack"
+      "slack"
     ];
     masApps = {};
   };
