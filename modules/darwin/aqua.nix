@@ -4,9 +4,16 @@
   ...
 }: {
   # Window manager configuration
+  environment.etc = {
+    "sudoers.d/10-yabai".text = ''
+      %admin ALL=(root) NOPASSWD: ${pkgs.yabai}/bin/yabai --load-sa
+    '';
+  };
+
   services.yabai = {
     enable = true;
     package = pkgs.yabai;
+    enableScriptingAddition = true;
     config = {
       # Layout
       layout = "bsp";
@@ -32,7 +39,9 @@
 
     extraConfig = ''
       # Application-specific rules
-      yabai -m rule --add app='^Emacs$' manage=on
+      yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+      sudo yabai --load-sa
+      yabai -m rule --add app="^Emacs$" manage=on
       yabai -m rule --add app="^System Settings$" manage=off
       yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
       yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
