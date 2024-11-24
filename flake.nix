@@ -43,7 +43,6 @@
       modules = [
         home-manager.darwinModules.home-manager
         ./modules/darwin
-        ./modules/darwin/apps.nix
         ./profiles/main.nix
       ];
       specialArgs = {inherit self inputs nixpkgs;};
