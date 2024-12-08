@@ -1,7 +1,6 @@
 {pkgs, ...}: let
   fontFamily = "Iosevka Nerd Font Mono";
 
-  # Theme `adventure`
   adventure = {
     primary = {
       background = "0x2b2b2b";

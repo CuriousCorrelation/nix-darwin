@@ -11,6 +11,7 @@ in {
     ./fzf.nix
     ./git.nix
     ./ssh.nix
+    ./wezterm.nix
     ./zsh.nix
   ];
 

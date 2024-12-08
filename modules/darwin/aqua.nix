@@ -70,7 +70,7 @@
   services.skhd = {
     enable = true;
     skhdConfig = ''
-      lcmd - return    : open -n -a "Alacritty"
+      lcmd - return    : open -n -a "Wezterm"
       lalt - t         : yabai -m window --toggle float && yabai -m window --grid 4:4:1:1:2:2
       lcmd - q         : yabai -m window --close
       lcmd + shift - f : yabai -m window --toggle zoom-fullscreen
