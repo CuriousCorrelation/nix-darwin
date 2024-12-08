@@ -48,7 +48,8 @@ in {
     packages = with pkgs; [
       devenv
       direnv
-      (nerdfonts.override {fonts = ["FantasqueSansMono" "FiraCode" "Iosevka" "JetBrainsMono"];})
+      nerd-fonts.iosevka
+      nerd-fonts.fira-code
       (aspellWithDicts (dicts: with dicts; [en en-computers en-science]))
       ffmpeg
       mpv
