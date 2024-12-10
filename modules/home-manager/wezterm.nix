@@ -1,24 +1,24 @@
 {...}: let
   adventure = {
     ansi = [
-      "#040404" # black
-      "#d84a33" # red
-      "#5da602" # green
-      "#eebb6e" # yellow
-      "#417ab3" # blue
-      "#e5c499" # magenta
-      "#bdcfe5" # cyan
-      "#dbded8" # white
+      "#040404"
+      "#d84a33"
+      "#5da602"
+      "#eebb6e"
+      "#417ab3"
+      "#e5c499"
+      "#bdcfe5"
+      "#dbded8"
     ];
     brights = [
-      "#685656" # black
-      "#d76b42" # red
-      "#99b52c" # green
-      "#ffb670" # yellow
-      "#97d7ef" # blue
-      "#aa7900" # magenta
-      "#bdcfe5" # cyan
-      "#e4d5c7" # white
+      "#685656"
+      "#d76b42"
+      "#99b52c"
+      "#ffb670"
+      "#97d7ef"
+      "#aa7900"
+      "#bdcfe5"
+      "#e4d5c7"
     ];
     background = "#2b2b2b";
     foreground = "#feffff";
@@ -27,24 +27,24 @@
   };
   adventure_light = {
     ansi = [
-      "#685656" # black
-      "#d84a33" # red
-      "#5da602" # green
-      "#eebb6e" # yellow
-      "#417ab3" # blue
-      "#e5c499" # magenta
-      "#bdcfe5" # cyan
-      "#2b2b2b" # white
+      "#685656"
+      "#d84a33"
+      "#5da602"
+      "#eebb6e"
+      "#417ab3"
+      "#e5c499"
+      "#bdcfe5"
+      "#2b2b2b"
     ];
     brights = [
-      "#685656" # black
-      "#d76b42" # red
-      "#99b52c" # green
-      "#ffb670" # yellow
-      "#97d7ef" # blue
-      "#aa7900" # magenta
-      "#bdcfe5" # cyan
-      "#2b2b2b" # white
+      "#685656"
+      "#d76b42"
+      "#99b52c"
+      "#ffb670"
+      "#97d7ef"
+      "#aa7900"
+      "#bdcfe5"
+      "#2b2b2b"
     ];
     background = "#feffff";
     foreground = "#2b2b2b";

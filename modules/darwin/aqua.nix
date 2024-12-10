@@ -56,8 +56,8 @@
       yabai -m rule --add app="^Music$" manage=off
       yabai -m rule --add app="^mpv$" manage=off
       yabai -m rule --add app="^macfeh$" manage=off
-      yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
-      yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
+      yabai -m rule --add app="^Finder$" manage=off
+      yabai -m rule --add app="^Safari" manage=off
       yabai -m rule --add label="Software Update" title="Software Update" manage=off
       yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
       yabai -m rule --add subrole="^AXDialog$" manage=off
@@ -86,13 +86,6 @@
       lcmd + cmd - j   : yabai -m window --resize up:-50:0 && yabai -m window --resize down:-50:0
       lcmd + cmd - h   : yabai -m window --resize left:-50:0 && yabai -m window --resize right:-50:0
       lcmd + cmd - l   : yabai -m window --resize left:50:0 && yabai -m window --resize right:50:0
-      lcmd - 1         : yabai -m space --focus 1
-      lcmd - 2         : yabai -m space --focus 2
-      lcmd - 3         : yabai -m space --focus 3
-      lcmd - 4         : yabai -m space --focus 4
-      lcmd - 5         : yabai -m space --focus 5
-      lcmd - j         : yabai -m space --focus prev
-      lcmd - l         : yabai -m space --focus next
       lcmd + shift - 1 : yabai -m window --space 1
       lcmd + shift - 2 : yabai -m window --space 2
       lcmd + shift - 3 : yabai -m window --space 3
