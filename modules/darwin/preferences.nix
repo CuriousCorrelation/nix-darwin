@@ -32,8 +32,10 @@
     trackpad = {
       # silent clicking = 0, default = 1
       ActuationStrength = 0;
-      # enable tap to click
+      # enable tap-to-click
       Clicking = true;
+      # enable tap-to-drag
+      Dragging = true;
       # firmness level, 0 = lightest, 2 = heaviest
       FirstClickThreshold = 1;
       # firmness level for force touch
