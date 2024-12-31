@@ -86,11 +86,6 @@
       lcmd + cmd - j   : yabai -m window --resize up:-50:0 && yabai -m window --resize down:-50:0
       lcmd + cmd - h   : yabai -m window --resize left:-50:0 && yabai -m window --resize right:-50:0
       lcmd + cmd - l   : yabai -m window --resize left:50:0 && yabai -m window --resize right:50:0
-      lcmd + shift - 1 : yabai -m window --space 1
-      lcmd + shift - 2 : yabai -m window --space 2
-      lcmd + shift - 3 : yabai -m window --space 3
-      lcmd + shift - 4 : yabai -m window --space 4
-      lcmd + shift - 5 : yabai -m window --space 5
       lcmd + shift - h : yabai -m window --space prev && yabai -m space --focus prev
       lcmd + shift - l : yabai -m window --space next && yabai -m space --focus next
     '';
