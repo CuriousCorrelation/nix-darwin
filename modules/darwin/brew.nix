@@ -19,6 +19,7 @@
 
     casks = [
       "firefox"
+      "google-chrome"
       "visual-studio-code"
       "signal"
       "slack"
