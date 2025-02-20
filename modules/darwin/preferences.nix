@@ -11,7 +11,7 @@
     NSGlobalDomain = {
       ApplePressAndHoldEnabled = false;
       InitialKeyRepeat = 15;
-      KeyRepeat = 5;
+      KeyRepeat = 2;
       AppleShowAllFiles = true;
       AppleShowAllExtensions = true;
       AppleShowScrollBars = "Automatic";
