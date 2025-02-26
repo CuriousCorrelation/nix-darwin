@@ -12,7 +12,6 @@
 
   # Nix configuration
   nix = {
-    configureBuildUsers = false;
     nixPath = [
       "darwin=/etc/${config.environment.etc.darwin.target}"
     ];
@@ -27,14 +26,8 @@
   ];
 
   # Security settings
-  security.pam.enableSudoTouchIdAuth = true;
-
-  # System services
-  services = {
-    # Nix daemon
-    nix-daemon.enable = true;
-  };
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # System state version
-  system.stateVersion = 4;
+  system.stateVersion = 5;
 }

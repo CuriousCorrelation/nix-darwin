@@ -81,11 +81,12 @@ in {
     vscode = {
       enable = true;
 
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = false;
       mutableExtensionsDir = false;
 
-      extensions = with pkgs.vscode-extensions; [
+      profiles.default.enableUpdateCheck = false;
+      profiles.default.enableExtensionUpdateCheck = false;
+
+      profiles.default.extensions = with pkgs.vscode-extensions; [
         jdinhlife.gruvbox
         vscodevim.vim
         yzhang.markdown-all-in-one
@@ -97,7 +98,7 @@ in {
       ];
 
       # Settings
-      userSettings = {
+      profiles.default.userSettings = {
         "workbench.colorTheme" = "Gruvbox Dark Hard";
         "telemetry.telemetryLevel" = "off";
       };
