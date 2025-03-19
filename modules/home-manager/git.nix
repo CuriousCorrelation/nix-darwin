@@ -16,6 +16,13 @@
       push.followTags = true;
       push.autoSetupRemote = true;
     };
+    aliases = {
+      wta = ''!f() {
+        branch="$1"
+        upstream="''${2:-upstream/patch}"
+        git worktree add -b "$branch" "../$branch" "$upstream"
+      }; f'';
+    };
     delta = {
       enable = false;
       options = {
