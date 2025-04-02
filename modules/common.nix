@@ -46,7 +46,7 @@
   environment = {
     systemPackages = with pkgs; [
       # editors
-      emacs-nox
+      (emacs-nox.override { withNativeCompilation = false; })
 
       # standard toolset
       coreutils-full
