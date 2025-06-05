@@ -26,6 +26,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # nixvim for neovim
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # shell stuff
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -36,16 +42,22 @@
     darwin,
     home-manager,
     nixpkgs,
+    nixvim,
     ...
   } @ inputs: {
     darwinConfigurations."Curiouss-MacBook-Pro" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
         home-manager.darwinModules.home-manager
+        {
+          home-manager.extraSpecialArgs = {
+            inherit self inputs nixpkgs nixvim;
+          };
+        }
         ./modules/darwin
         ./profiles/main.nix
       ];
-      specialArgs = {inherit self inputs nixpkgs;};
+      specialArgs = {inherit self inputs nixpkgs nixvim;};
     };
 
     homeConfigurations."Curiouss-MacBook-Pro" = home-manager.lib.homeManagerConfiguration {
@@ -65,7 +77,7 @@
         }
         ./profiles/home-manager/main.nix
       ];
-      extraSpecialArgs = {inherit self inputs nixpkgs;};
+      extraSpecialArgs = {inherit self inputs nixpkgs nixvim;};
     };
   };
 }

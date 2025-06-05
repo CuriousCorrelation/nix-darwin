@@ -10,6 +10,7 @@ in {
     ./bat.nix
     ./fzf.nix
     ./git.nix
+    ./neovim.nix
     ./ssh.nix
     ./wezterm.nix
     ./zsh.nix
