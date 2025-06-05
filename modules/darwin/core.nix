@@ -3,6 +3,8 @@
   config,
   ...
 }: {
+  system.primaryUser = "curiouscorrelation";
+
   # Environment setup
   environment = {
     etc = {

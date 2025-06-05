@@ -15,10 +15,6 @@ in {
     ./zsh.nix
   ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
-
   home = let
     nodePath = "${homeDir}/.node";
   in {
