@@ -8,6 +8,7 @@
     shellAliases = {
       k = "k -hat";
       e = "emacs";
+      v = "neovim";
       dev = "devenv shell";
       ls = "ls --color --group-directories-first";
     };

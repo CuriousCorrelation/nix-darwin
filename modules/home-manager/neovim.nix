@@ -35,6 +35,9 @@
       cmdheight = 1;
       updatetime = 300;
       timeoutlen = 500;
+
+      # System clipboard integration
+      clipboard = "unnamedplus";
     };
 
     plugins = {
@@ -47,6 +50,90 @@
       nvim-surround.enable = true;
       neoconf.enable = true;
       blink-cmp-copilot.enable = true;
+
+      # project.nvim with projectile-like management
+      project-nvim = {
+        enable = true;
+        enableTelescope = false;  # Using fzf-lua instead
+        settings = {
+          manual_mode = false;
+          detection_methods = [ "lsp" "pattern" ];
+          patterns = [ ".git" "_darcs" ".hg" ".bzr" ".svn" "Makefile" "package.json" "Cargo.toml" "flake.nix" "pyproject.toml" ];
+          ignore_lsp = [];
+          exclude_dirs = [ "~/.cargo/*" "*/node_modules/*" ];
+          show_hidden = false;
+          silent_chdir = true;
+          scope_chdir = "global";
+          datapath = "~/.local/share/nvim";
+        };
+      };
+
+      # neogit with magit-like interface
+      neogit = {
+        enable = true;
+        settings = {
+          disable_hint = false;
+          disable_context_highlighting = false;
+          disable_signs = false;
+          graph_style = "ascii";
+          git_services = {
+            "github.com" = "https://github.com/\${owner}/\${repository}/compare/\${branch_name}?\${upstream_url}";
+            "bitbucket.org" = "https://bitbucket.org/\${owner}/\${repository}/branches/compare/\${branch_name}%0D\${upstream_url}";
+            "gitlab.com" = "https://gitlab.com/\${owner}/\${repository}/-/merge_requests/new?\${branch_name}?\${upstream_url}";
+          };
+          use_per_project_settings = true;
+          remember_settings = false;
+          fetch_after_checkout = false;
+          sort_branches = "-committerdate";
+          kind = "tab";
+          status = {
+            recent_commit_count = 10;
+          };
+          commit_editor = {
+            kind = "tab";
+          };
+          commit_select_view = {
+            kind = "tab";
+          };
+          commit_view = {
+            kind = "vsplit";
+            verify_commit = true;
+          };
+          log_view = {
+            kind = "tab";
+          };
+          rebase_editor = {
+            kind = "auto";
+          };
+          reflog_view = {
+            kind = "tab";
+          };
+          merge_editor = {
+            kind = "auto";
+          };
+          tag_editor = {
+            kind = "auto";
+          };
+          preview_buffer = {
+            kind = "split";
+          };
+          popup = {
+            kind = "split";
+          };
+          signs = {
+            hunk = ["" ""];
+            item = ["" ""];
+            section = ["" ""];
+          };
+          integrations = {
+            telescope = false;
+            diffview = false;
+            fzf_lua = true;
+          };
+        };
+      };
+
+      diffview.enable = true;
 
       which-key = {
         enable = true;
@@ -66,6 +153,7 @@
             { __unkeyed-1 = "<leader>q"; group = "Quit"; }
             { __unkeyed-1 = "<leader>x"; group = "Errors/Diagnostics"; }
             { __unkeyed-1 = "<leader>n"; group = "Notes"; }
+            { __unkeyed-1 = "<leader>p"; group = "Project"; }
           ];
         };
       };
@@ -330,6 +418,9 @@
           (silentNMap "<leader>fd" "Find file in project" "<cmd>lua require('fzf-lua').git_files()<CR>")
           (silentNMap "<leader>fD" "Delete file" "<cmd>!rm %<CR><cmd>bdelete<CR>")
           (silentNMap "<leader>fy" "Yank filename" "<cmd>let @+ = expand('%:p')<CR>")
+          (silentNMap "<leader>fw" "Delete trailing whitespace" "<cmd>%s/\\s\\+$//e<CR>")
+          (silentMap ["n" "v"] "<D-\\>" "Delete trailing whitespace" "<cmd>%s/\\s\\+$//e<CR>")
+          (silentMap ["n" "v"] "<C-\\>" "Delete trailing whitespace" "<cmd>%s/\\s\\+$//e<CR>")
 
           # BUFFER OPERATIONS (SPC b)
           (silentNMap "<leader>bb" "Switch buffer" "<cmd>lua require('fzf-lua').buffers()<CR>")
@@ -360,13 +451,27 @@
           (silentNMap "<leader>wL" "Move window right" "<C-w>L")
           (silentNMap "<leader>w=" "Balance windows" "<C-w>=")
 
-          # PROJECT/SEARCH (SPC s)
+          # SEARCH (SPC s) - Doom Emacs style search commands
           (silentNMap "<leader>sp" "Search project" "<cmd>lua require('fzf-lua').live_grep()<CR>")
+          (silentNMap "<leader>sd" "Search directory" "<cmd>lua require('fzf-lua').live_grep({cwd=vim.fn.expand('%:p:h')})<CR>")
           (silentNMap "<leader>ss" "Search buffer" "<cmd>lua require('fzf-lua').blines()<CR>")
           (silentNMap "<leader>si" "Search symbols (imenu)" "<cmd>lua require('fzf-lua').lsp_document_symbols()<CR>")
           (silentNMap "<leader>sI" "Search symbols workspace" "<cmd>lua require('fzf-lua').lsp_workspace_symbols()<CR>")
           (silentNMap "<leader>sl" "Search lines" "<cmd>lua require('fzf-lua').lines()<CR>")
           (silentNMap "<leader>sr" "Search and replace" "<cmd>lua require('fzf-lua').live_grep()<CR>")
+          (silentNMap "<leader>sf" "Search files" "<cmd>lua require('fzf-lua').files()<CR>")
+          (silentNMap "<leader>sF" "Search files (directory)" "<cmd>lua require('fzf-lua').files({cwd=vim.fn.expand('%:p:h')})<CR>")
+
+          # PROJECT OPERATIONS (SPC p) - Projectile-like functionality
+          (silentNMap "<leader>pp" "Switch project" "<cmd>lua require('fzf-lua').files({cwd='~/'})<CR>")
+          (silentNMap "<leader>pf" "Find file in project" "<cmd>lua require('fzf-lua').git_files()<CR>")
+          (silentNMap "<leader>pF" "Find file in project (all)" "<cmd>lua require('fzf-lua').files()<CR>")
+          (silentNMap "<leader>ps" "Search in project" "<cmd>lua require('fzf-lua').live_grep()<CR>")
+          (silentNMap "<leader>pr" "Recent project files" "<cmd>lua require('fzf-lua').oldfiles({cwd_only=true})<CR>")
+          (silentNMap "<leader>pb" "Project buffers" "<cmd>lua require('fzf-lua').buffers({cwd_only=true})<CR>")
+          (silentNMap "<leader>pd" "Find directory in project" "<cmd>lua require('fzf-lua').files({fd_opts='--type d'})<CR>")
+          (silentNMap "<leader>pk" "Kill project buffers" "<cmd>%bdelete|edit #|normal `\"<CR>")
+          (silentNMap "<leader>pR" "Replace in project" "<cmd>lua require('fzf-lua').live_grep()<CR>")
 
           # OPEN/TOGGLE (SPC o)
           (silentNMap "<leader>op" "Toggle file tree" "<cmd>Neotree toggle<CR>")
@@ -375,17 +480,32 @@
           (silentNMap "<leader>ot" "Open terminal" "<cmd>terminal<CR>")
           (silentNMap "<leader>oT" "Open terminal (split)" "<cmd>split | terminal<CR>")
 
-          # GIT (SPC g)
-          (silentNMap "<leader>gs" "Git status" "<cmd>lua require('fzf-lua').git_status()<CR>")
+          # GIT (SPC g) - Enhanced with neogit mappings
+          (silentNMap "<leader>gg" "Neogit (magit)" "<cmd>Neogit<CR>")
+          (silentNMap "<leader>gs" "Git status (neogit)" "<cmd>Neogit<CR>")
+          (silentNMap "<leader>gS" "Git status (fzf)" "<cmd>lua require('fzf-lua').git_status()<CR>")
           (silentNMap "<leader>gc" "Git commits (buffer)" "<cmd>lua require('fzf-lua').git_bcommits()<CR>")
           (silentNMap "<leader>gC" "Git commits (project)" "<cmd>lua require('fzf-lua').git_commits()<CR>")
           (silentNMap "<leader>gb" "Git blame" "<cmd>lua require('gitblame').toggle()<CR>")
-          (silentNMap "<leader>gd" "Git diff" "<cmd>Gitsigns diffthis<CR>")
+          (silentNMap "<leader>gd" "Git diff" "<cmd>DiffviewOpen<CR>")
+          (silentNMap "<leader>gD" "Git diff (close)" "<cmd>DiffviewClose<CR>")
+          (silentNMap "<leader>gh" "Git file history" "<cmd>DiffviewFileHistory<CR>")
+          (silentNMap "<leader>gH" "Git file history (current file)" "<cmd>DiffviewFileHistory %<CR>")
+          (silentNMap "<leader>gl" "Neogit log" "<cmd>Neogit log<CR>")
+          (silentNMap "<leader>gL" "Neogit log (current file)" "<cmd>Neogit log -- %<CR>")
+          (silentNMap "<leader>gp" "Git push" "<cmd>Neogit push<CR>")
+          (silentNMap "<leader>gP" "Git pull" "<cmd>Neogit pull<CR>")
+          (silentNMap "<leader>gf" "Git fetch" "<cmd>Neogit fetch<CR>")
+          (silentNMap "<leader>gr" "Git rebase" "<cmd>Neogit rebase<CR>")
+          (silentNMap "<leader>gm" "Git merge" "<cmd>Neogit merge<CR>")
+          (silentNMap "<leader>gt" "Git tag" "<cmd>Neogit tag<CR>")
+          (silentNMap "<leader>gw" "Git worktree" "<cmd>Neogit worktree<CR>")
+          (silentNMap "<leader>gz" "Git stash" "<cmd>Neogit stash<CR>")
           (silentNMap "]c" "Next git hunk" "<cmd>Gitsigns next_hunk<CR>")
           (silentNMap "[c" "Previous git hunk" "<cmd>Gitsigns prev_hunk<CR>")
-          (silentNMap "<leader>gr" "Reset git hunk" "<cmd>Gitsigns reset_hunk<CR>")
-          (silentNMap "<leader>gS" "Stage git hunk" "<cmd>Gitsigns stage_hunk<CR>")
-          (silentVMap "<leader>gS" "Stage git hunk (visual)" "<cmd>Gitsigns stage_hunk<CR>")
+          (silentNMap "<leader>ghr" "Reset git hunk" "<cmd>Gitsigns reset_hunk<CR>")
+          (silentNMap "<leader>ghs" "Stage git hunk" "<cmd>Gitsigns stage_hunk<CR>")
+          (silentVMap "<leader>ghs" "Stage git hunk (visual)" "<cmd>Gitsigns stage_hunk<CR>")
 
           # CODE (SPC c)
           (silentNMap "<leader>ca" "Code actions" "<cmd>lua require('fzf-lua').lsp_code_actions()<CR>")
@@ -451,5 +571,9 @@
         ];
   };
 in {
-  home.packages = [ nvim ];
+  home.packages = [ 
+    nvim 
+    pkgs.xclip         # X11 clipboard support
+    pkgs.wl-clipboard  # Wayland clipboard support
+  ];
 }
