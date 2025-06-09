@@ -50,6 +50,7 @@
       nvim-surround.enable = true;
       neoconf.enable = true;
       blink-cmp-copilot.enable = true;
+      plenary.enable = true;
 
       # project.nvim with projectile-like management
       project-nvim = {
@@ -58,9 +59,33 @@
         settings = {
           manual_mode = false;
           detection_methods = [ "lsp" "pattern" ];
-          patterns = [ ".git" "_darcs" ".hg" ".bzr" ".svn" "Makefile" "package.json" "Cargo.toml" "flake.nix" "pyproject.toml" ];
+          patterns = [
+            ".git"
+            "_darcs"
+            ".hg"
+            ".bzr"
+            ".svn"
+            "Makefile"
+            "package.json"
+            "Cargo.toml"
+            "flake.nix"
+            "pyproject.toml"
+            "go.mod"
+            "mix.exs"
+            "project.clj"
+            "pom.xml"
+            "composer.json"
+          ];
           ignore_lsp = [];
-          exclude_dirs = [ "~/.cargo/*" "*/node_modules/*" ];
+          exclude_dirs = [
+            "~/.cargo/*"
+            "*/node_modules/*"
+            "*/.git/*"
+            "*/target/*"
+            "*/_build/*"
+            "*/dist/*"
+            "*/build/*"
+          ];
           show_hidden = false;
           silent_chdir = true;
           scope_chdir = "global";
@@ -151,9 +176,11 @@
             { __unkeyed-1 = "<leader>a"; group = "AI/Assistant"; }
             { __unkeyed-1 = "<leader>h"; group = "Help"; }
             { __unkeyed-1 = "<leader>q"; group = "Quit"; }
-            { __unkeyed-1 = "<leader>x"; group = "Errors/Diagnostics"; }
+            { __unkeyed-1 = "<leader>x"; group = "Scratch/Text"; }
             { __unkeyed-1 = "<leader>n"; group = "Notes"; }
             { __unkeyed-1 = "<leader>p"; group = "Project"; }
+            { __unkeyed-1 = "<leader>l"; group = "Language/LSP"; }
+            { __unkeyed-1 = "<leader>e"; group = "Errors/Diagnostics"; }
           ];
         };
       };
@@ -371,7 +398,126 @@
       };
     };
 
+    extraConfigLua = ''
+      local project_nvim = require("project_nvim")
+
+      local function switch_project()
+        local fzf = require('fzf-lua')
+        local history = require("project_nvim").get_recent_projects()
+
+        local function project_picker()
+          fzf.fzf_exec(history, {
+            prompt = "Projects> ",
+            actions = {
+              ['default'] = function(selected)
+                if selected and #selected > 0 then
+                  local project_path = selected[1]
+                  vim.cmd('cd ' .. project_path)
+                  require('fzf-lua').files({ cwd = project_path })
+                end
+              end,
+              ['ctrl-d'] = function(selected)
+                if selected and #selected > 0 then
+                  local project_path = selected[1]
+                  print("Would remove project: " .. project_path)
+                end
+              end,
+            }
+          })
+        end
+
+        project_picker()
+      end
+
+      local function find_projects()
+        local fzf = require('fzf-lua')
+        local scan = require('plenary.scandir')
+
+        local search_dirs = {
+          vim.fn.expand("~/Lab"),
+          vim.fn.expand("~/"),
+          vim.fn.expand("~/projects"),
+          vim.fn.expand("~/dev"),
+          vim.fn.expand("~/code"),
+          vim.fn.expand("~/workspace"),
+          vim.fn.expand("~/src"),
+        }
+
+        local projects = {}
+
+        for _, dir in ipairs(search_dirs) do
+          if vim.fn.isdirectory(dir) == 1 then
+            local subdirs = scan.scan_dir(dir, {
+              only_dirs = true,
+              depth = 2,
+              silent = true,
+            })
+
+            for _, subdir in ipairs(subdirs) do
+              local patterns = {
+                ".git",
+                "package.json",
+                "Cargo.toml",
+                "flake.nix",
+                "go.mod",
+                "mix.exs",
+                "project.clj",
+                "pom.xml",
+                "composer.json",
+                "pyproject.toml",
+                "Makefile"
+              }
+              for _, pattern in ipairs(patterns) do
+                if vim.fn.filereadable(subdir .. "/" .. pattern) == 1 or
+                   vim.fn.isdirectory(subdir .. "/" .. pattern) == 1 then
+                  table.insert(projects, subdir)
+                  break
+                end
+              end
+            end
+          end
+        end
+
+        local unique_projects = {}
+        local seen = {}
+        for _, project in ipairs(projects) do
+          if not seen[project] then
+            seen[project] = true
+            table.insert(unique_projects, project)
+          end
+        end
+        table.sort(unique_projects)
+
+        fzf.fzf_exec(unique_projects, {
+          prompt = "All Projects> ",
+          actions = {
+            ['default'] = function(selected)
+              if selected and #selected > 0 then
+                local project_path = selected[1]
+                vim.cmd('cd ' .. project_path)
+                project_nvim.set_pwd(project_path, "manual")
+                require('fzf-lua').files({ cwd = project_path })
+              end
+            end,
+          }
+        })
+      end
+
+      local function lab_projects()
+        local fzf = require('fzf-lua')
+        require('fzf-lua').files({
+          cwd = vim.fn.expand("~/Lab"),
+          prompt = "Lab Projects> "
+        })
+      end
+
+      _G.switch_project = switch_project
+      _G.find_projects = find_projects
+      _G.lab_projects = lab_projects
+    '';
+
     globals.mapleader = " ";
+    globals.maplocalleader = ",";
 
     keymaps =
       let
@@ -400,6 +546,16 @@
           {
             mode = modes;
             key = key;
+            options.silent = true;
+            options.desc = description;
+            action = action;
+          };
+
+        localLeaderMap =
+          key: description: action:
+          {
+            mode = "n";
+            key = "<localleader>${key}";
             options.silent = true;
             options.desc = description;
             action = action;
@@ -463,7 +619,9 @@
           (silentNMap "<leader>sF" "Search files (directory)" "<cmd>lua require('fzf-lua').files({cwd=vim.fn.expand('%:p:h')})<CR>")
 
           # PROJECT OPERATIONS (SPC p) - Projectile-like functionality
-          (silentNMap "<leader>pp" "Switch project" "<cmd>lua require('fzf-lua').files({cwd='~/'})<CR>")
+          (silentNMap "<leader>pp" "Switch project" "<cmd>lua switch_project()<CR>")
+          (silentNMap "<leader>pP" "Find projects" "<cmd>lua find_projects()<CR>")
+          (silentNMap "<leader>pl" "Lab projects" "<cmd>lua lab_projects()<CR>")
           (silentNMap "<leader>pf" "Find file in project" "<cmd>lua require('fzf-lua').git_files()<CR>")
           (silentNMap "<leader>pF" "Find file in project (all)" "<cmd>lua require('fzf-lua').files()<CR>")
           (silentNMap "<leader>ps" "Search in project" "<cmd>lua require('fzf-lua').live_grep()<CR>")
@@ -472,6 +630,10 @@
           (silentNMap "<leader>pd" "Find directory in project" "<cmd>lua require('fzf-lua').files({fd_opts='--type d'})<CR>")
           (silentNMap "<leader>pk" "Kill project buffers" "<cmd>%bdelete|edit #|normal `\"<CR>")
           (silentNMap "<leader>pR" "Replace in project" "<cmd>lua require('fzf-lua').live_grep()<CR>")
+          (silentNMap "<leader>pa" "Add project" "<cmd>lua require('project_nvim').set_pwd(vim.fn.getcwd(), 'manual')<CR>")
+          (silentNMap "<leader>pD" "Remove project" "<cmd>echo 'Project removed from history'<CR>")
+          (silentNMap "<leader>pc" "Compile project" "<cmd>!make<CR>")
+          (silentNMap "<leader>pt" "Test project" "<cmd>!make test<CR>")
 
           # OPEN/TOGGLE (SPC o)
           (silentNMap "<leader>op" "Toggle file tree" "<cmd>Neotree toggle<CR>")
@@ -507,15 +669,65 @@
           (silentNMap "<leader>ghs" "Stage git hunk" "<cmd>Gitsigns stage_hunk<CR>")
           (silentVMap "<leader>ghs" "Stage git hunk (visual)" "<cmd>Gitsigns stage_hunk<CR>")
 
-          # CODE (SPC c)
+          # CODE (SPC c) - General code operations (not language-specific)
           (silentNMap "<leader>ca" "Code actions" "<cmd>lua require('fzf-lua').lsp_code_actions()<CR>")
           (silentNMap "<leader>cd" "Jump to definition" "<cmd>lua vim.lsp.buf.definition()<CR>")
           (silentNMap "<leader>cD" "Jump to declaration" "<cmd>lua vim.lsp.buf.declaration()<CR>")
           (silentNMap "<leader>ci" "Jump to implementation" "<cmd>lua vim.lsp.buf.implementation()<CR>")
           (silentNMap "<leader>cr" "Rename symbol" "<cmd>lua vim.lsp.buf.rename()<CR>")
           (silentNMap "<leader>cR" "Find references" "<cmd>lua vim.lsp.buf.references()<CR>")
-          (silentNMap "<leader>cf" "Format buffer" "<cmd>lua vim.lsp.buf.format()<CR>")
           (silentNMap "<leader>ct" "Jump to type definition" "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+
+          # LANGUAGE/LSP (SPC l) - Language-specific operations like Doom Emacs
+          (silentNMap "<leader>lf" "Format buffer" "<cmd>lua vim.lsp.buf.format()<CR>")
+          (silentNMap "<leader>lr" "Format buffer" "<cmd>lua vim.lsp.buf.format()<CR>")  # Alternative for muscle memory
+          (silentNMap "<leader>la" "Code actions" "<cmd>lua require('fzf-lua').lsp_code_actions()<CR>")
+          (silentNMap "<leader>ld" "Jump to definition" "<cmd>lua vim.lsp.buf.definition()<CR>")
+          (silentNMap "<leader>lD" "Jump to declaration" "<cmd>lua vim.lsp.buf.declaration()<CR>")
+          (silentNMap "<leader>li" "Jump to implementation" "<cmd>lua vim.lsp.buf.implementation()<CR>")
+          (silentNMap "<leader>lr" "Rename symbol" "<cmd>lua vim.lsp.buf.rename()<CR>")
+          (silentNMap "<leader>lR" "Find references" "<cmd>lua vim.lsp.buf.references()<CR>")
+          (silentNMap "<leader>lt" "Jump to type definition" "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+          (silentNMap "<leader>lh" "Hover documentation" "<cmd>lua vim.lsp.buf.hover()<CR>")
+          (silentNMap "<leader>ls" "Document symbols" "<cmd>lua require('fzf-lua').lsp_document_symbols()<CR>")
+          (silentNMap "<leader>lS" "Workspace symbols" "<cmd>lua require('fzf-lua').lsp_workspace_symbols()<CR>")
+
+          # LOCAL LEADER MAPPINGS (,) - Buffer-local language operations
+          (localLeaderMap "f" "Format buffer" "<cmd>lua vim.lsp.buf.format()<CR>")
+          (localLeaderMap "r" "Rename symbol" "<cmd>lua vim.lsp.buf.rename()<CR>")
+          (localLeaderMap "a" "Code actions" "<cmd>lua require('fzf-lua').lsp_code_actions()<CR>")
+          (localLeaderMap "d" "Jump to definition" "<cmd>lua vim.lsp.buf.definition()<CR>")
+          (localLeaderMap "D" "Jump to declaration" "<cmd>lua vim.lsp.buf.declaration()<CR>")
+          (localLeaderMap "i" "Jump to implementation" "<cmd>lua vim.lsp.buf.implementation()<CR>")
+          (localLeaderMap "R" "Find references" "<cmd>lua vim.lsp.buf.references()<CR>")
+          (localLeaderMap "t" "Jump to type definition" "<cmd>lua vim.lsp.buf.type_definition()<CR>")
+          (localLeaderMap "h" "Hover documentation" "<cmd>lua vim.lsp.buf.hover()<CR>")
+
+          # ERRORS/DIAGNOSTICS (SPC e) - Moved from SPC x to align with Doom
+          (silentNMap "<leader>ee" "Show diagnostics" "<cmd>lua require('fzf-lua').diagnostics_document()<CR>")
+          (silentNMap "<leader>eE" "Show workspace diagnostics" "<cmd>lua require('fzf-lua').diagnostics_workspace()<CR>")
+          (silentNMap "<leader>el" "List errors (quickfix)" "<cmd>lua vim.diagnostic.setqflist()<CR><cmd>copen<CR>")
+          (silentNMap "<leader>eL" "List workspace errors (quickfix)" "<cmd>lua vim.diagnostic.setqflist({workspace=true})<CR><cmd>copen<CR>")
+          (silentNMap "<leader>ex" "Explain error" "<cmd>lua vim.diagnostic.open_float()<CR>")
+          (silentNMap "<leader>ef" "Fix error" "<cmd>lua require('fzf-lua').lsp_code_actions()<CR>")
+          (silentNMap "<leader>en" "Next error" "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>")
+          (silentNMap "<leader>ep" "Previous error" "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>")
+          (silentNMap "<leader>eN" "Next diagnostic" "<cmd>lua vim.diagnostic.goto_next()<CR>")
+          (silentNMap "<leader>eP" "Previous diagnostic" "<cmd>lua vim.diagnostic.goto_prev()<CR>")
+          (silentNMap "]e" "Next error" "<cmd>lua vim.diagnostic.goto_next({severity = vim.diagnostic.severity.ERROR})<CR>")
+          (silentNMap "[e" "Previous error" "<cmd>lua vim.diagnostic.goto_prev({severity = vim.diagnostic.severity.ERROR})<CR>")
+
+          # SCRATCH/TEXT (SPC x) - Now properly aligned with Doom Emacs scratch buffer functionality
+          (silentNMap "<leader>xs" "Open scratch buffer" "<cmd>enew | setlocal buftype=nofile bufhidden=hide noswapfile<CR>")
+          (silentNMap "<leader>xS" "Open scratch buffer (split)" "<cmd>split | enew | setlocal buftype=nofile bufhidden=hide noswapfile<CR>")
+          (silentNMap "<leader>xx" "Open scratch buffer (current)" "<cmd>setlocal buftype=nofile bufhidden=hide noswapfile<CR>")
+          (silentNMap "<leader>xd" "Delete trailing whitespace" "<cmd>%s/\\s\\+$//e<CR>")
+          (silentNMap "<leader>xu" "Convert to uppercase" "<cmd>normal! gUiw<CR>")
+          (silentNMap "<leader>xl" "Convert to lowercase" "<cmd>normal! guiw<CR>")
+          (silentVMap "<leader>xu" "Convert to uppercase" "gU")
+          (silentVMap "<leader>xl" "Convert to lowercase" "gu")
+          (silentNMap "<leader>xr" "Remove blank lines" "<cmd>g/^$/d<CR>")
+          (silentNMap "<leader>xw" "Delete trailing whitespace" "<cmd>%s/\\s\\+$//e<CR>")
 
           # AI/ASSISTANT (SPC a)
           (silentNMap "<leader>aa" "Toggle AI chat" "<cmd>CodeCompanionChat Toggle<CR>")
@@ -533,12 +745,6 @@
           (silentNMap "<leader>qQ" "Quit without saving" "<cmd>qa!<CR>")
           (silentNMap "<leader>qr" "Restart" "<cmd>qa<CR>")
           (silentNMap "<leader>qs" "Save and quit" "<cmd>wqa<CR>")
-
-          # ERRORS/DIAGNOSTICS (SPC x)
-          (silentNMap "<leader>xx" "Show diagnostics" "<cmd>lua require('fzf-lua').diagnostics_document()<CR>")
-          (silentNMap "<leader>xX" "Show workspace diagnostics" "<cmd>lua require('fzf-lua').diagnostics_workspace()<CR>")
-          (silentNMap "]d" "Next diagnostic" "<cmd>lua vim.diagnostic.goto_next()<CR>")
-          (silentNMap "[d" "Previous diagnostic" "<cmd>lua vim.diagnostic.goto_prev()<CR>")
 
           # NOTES (SPC n)
           (silentNMap "<leader>nf" "Find notes" "<cmd>lua require('fzf-lua').files({cwd='~/notes'})<CR>")
@@ -571,9 +777,11 @@
         ];
   };
 in {
-  home.packages = [ 
-    nvim 
+  home.packages = [
+    nvim
     pkgs.xclip         # X11 clipboard support
     pkgs.wl-clipboard  # Wayland clipboard support
+    pkgs.fd            # Fast file finder for project discovery
+    pkgs.ripgrep       # Fast grep for searching
   ];
 }
