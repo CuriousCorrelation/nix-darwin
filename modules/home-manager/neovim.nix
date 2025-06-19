@@ -50,7 +50,6 @@
       nvim-surround.enable = true;
       neoconf.enable = true;
       blink-cmp-copilot.enable = true;
-      plenary.enable = true;
 
       # project.nvim with projectile-like management
       project-nvim = {
