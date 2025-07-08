@@ -33,20 +33,22 @@
     };
 
     aliases = {
-      wta = ''!f() {
-        branch="$1"
-        upstream="''${2:-upstream/patch}"
-        [ -z "$branch" ] && { echo "Usage: git wta <branch-name> [upstream-ref]"; return 1; }
-        git worktree add -b "$branch" "../$branch" "$upstream"
-      }; f'';
+      wta = ''
+        !f() {
+          branch="$1"
+          upstream="''$'{2:-upstream/patch}"
+          [ -z "$branch" ] && { echo "Usage: git wta <branch-name> [upstream-ref]"; return 1; }
+          git worktree add -b "$branch" "../$branch" "$upstream"
+        }; f
+      '';
 
-      wtd = ''!f() {
-        branch="$1"
-        [ -z "$branch" ] && { echo "Usage: git wtd <branch-name>"; return 1; }
-        [ -d "../$branch" ] && git worktree remove "../$branch" && git branch -D "$branch" 2>/dev/null || true
-      }; f'';
-
-
+      wtd = ''
+        !f() {
+          branch="$1"
+          [ -z "$branch" ] && { echo "Usage: git wtd <branch-name>"; return 1; }
+          [ -d "../$branch" ] && git worktree remove "../$branch" && git branch -D "$branch" 2>/dev/null || true
+        }; f
+      '';
     };
 
     delta = {
