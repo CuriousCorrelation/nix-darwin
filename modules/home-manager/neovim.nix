@@ -778,8 +778,6 @@
 in {
   home.packages = [
     nvim
-    pkgs.xclip         # X11 clipboard support
-    pkgs.wl-clipboard  # Wayland clipboard support
     pkgs.fd            # Fast file finder for project discovery
     pkgs.ripgrep       # Fast grep for searching
   ];
