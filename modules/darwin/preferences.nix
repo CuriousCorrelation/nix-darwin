@@ -1,4 +1,10 @@
 {...}: {
+  # firewall
+  networking.applicationFirewall = {
+    enable = true;
+    enableStealthMode = true;
+  };
+
   system.defaults = {
     # login window settings
     loginwindow = {
@@ -42,14 +48,6 @@
       SecondClickThreshold = 1;
       # allow positional right click
       TrackpadRightClick = true;
-    };
-
-    # firewall settings
-    alf = {
-      # 0 = disabled 1 = enabled 2 = blocks all connections except for essential services
-      globalstate = 1;
-      loggingenabled = 0;
-      stealthenabled = 1;
     };
 
     # dock settings
