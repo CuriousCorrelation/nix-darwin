@@ -23,6 +23,7 @@
       "visual-studio-code"
       "signal"
       "slack"
+      "steermouse"
     ];
 
     # Mac App Store apps
