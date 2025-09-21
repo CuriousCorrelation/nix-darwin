@@ -6,6 +6,18 @@
   };
 
   system.defaults = {
+    # Mouse settings
+    ".GlobalPreferences" = {
+      "com.apple.mouse.scaling" = 0.5;   # Lower speed (range: 0.0 to 3.0)
+    };
+
+    # Add newer mouse settings not yet supported by nix-darwin
+    CustomUserPreferences = {
+      ".GlobalPreferences" = {
+        "com.apple.mouse.linear" = 1;    # Disable acceleration (Sonoma+)
+      };
+    };
+
     # login window settings
     loginwindow = {
       # disable guest account

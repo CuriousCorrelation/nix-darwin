@@ -23,6 +23,7 @@
       "visual-studio-code"
       "signal"
       "slack"
+      "mac-mouse-fix"
     ];
 
     # Mac App Store apps
