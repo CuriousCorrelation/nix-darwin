@@ -24,6 +24,7 @@
       "signal"
       "slack"
       "mac-mouse-fix"
+      "stats"
     ];
 
     # Mac App Store apps
