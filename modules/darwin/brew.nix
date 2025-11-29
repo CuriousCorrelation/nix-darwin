@@ -28,6 +28,7 @@
       "slack"
       "mac-mouse-fix"
       "stats"
+      "caffeine"
     ];
 
     # Mac App Store apps
