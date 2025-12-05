@@ -75,30 +75,5 @@ in {
     pandoc.enable = true;
     ripgrep.enable = true;
     starship.enable = true;
-    vscode = {
-      enable = true;
-
-      mutableExtensionsDir = false;
-
-      profiles.default.enableUpdateCheck = false;
-      profiles.default.enableExtensionUpdateCheck = false;
-
-      profiles.default.extensions = with pkgs.vscode-extensions; [
-        jdinhlife.gruvbox
-        vscodevim.vim
-        yzhang.markdown-all-in-one
-        ms-vsliveshare.vsliveshare
-        rust-lang.rust-analyzer
-        ms-azuretools.vscode-docker
-        vue.volar
-        bbenoist.nix
-      ];
-
-      # Settings
-      profiles.default.userSettings = {
-        "workbench.colorTheme" = "Gruvbox Dark Hard";
-        "telemetry.telemetryLevel" = "off";
-      };
-    };
   };
 }
